@@ -105,6 +105,14 @@ public class Jdk5JavaProcessManager
         }
     }
 
+    @Override
+    public JavaProcess get(String processName) {
+
+        // TODO implement for jdk 5
+
+        return null;
+    }
+
     /**
      * @inheritDoc
      */

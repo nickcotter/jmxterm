@@ -18,6 +18,14 @@ public abstract class JavaProcessManager
     public abstract JavaProcess get( int pid );
 
     /**
+     * Get JVM process by process name
+     *
+     * @param processName the name of the process; partial match is ok
+     * @return Process of NULL
+     */
+    public abstract JavaProcess get(String processName);
+
+    /**
      * List all running Java processes
      * 
      * @return List of running processes

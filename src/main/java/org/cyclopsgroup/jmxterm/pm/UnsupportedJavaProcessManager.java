@@ -54,6 +54,11 @@ public class UnsupportedJavaProcessManager
         throw new UnsupportedOperationException( message, cause );
     }
 
+    @Override
+    public JavaProcess get(String processName) {
+        throw new UnsupportedOperationException( message, cause );
+    }
+
     /**
      * @inheritDoc
      */

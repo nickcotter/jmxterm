@@ -83,6 +83,14 @@ public final class SyntaxUtils
         }
         else
         {
+            // TODO refactor and unit test
+            if(jpm != null) {
+                JavaProcess javaProcess = jpm.get(url);
+                if(javaProcess != null) {
+                    return new JMXServiceURL(javaProcess.toUrl());
+                }
+            }
+
             return new JMXServiceURL( url );
         }
     }

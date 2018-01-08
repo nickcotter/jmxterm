@@ -45,6 +45,10 @@ public class Jdk6JavaProcessManager
         {
             return null;
         }
+        return getJavaProcess(vm);
+    }
+
+    private JavaProcess getJavaProcess(Object vm) {
         try
         {
             return new Jdk6JavaProcess( WeakCastUtils.cast( vm, LocalVirtualMachine.class ) );
@@ -57,6 +61,25 @@ public class Jdk6JavaProcessManager
         {
             throw new RuntimeException( "Can't cast " + vm + " to LocalVirtualMachine", e );
         }
+    }
+
+    @Override
+    public JavaProcess get(String processName) {
+
+        System.out.println("trying to find process name: " + processName);
+
+        Map<Integer, Object> lvms = staticVm.getAllVirtualMachines();
+
+        for (Object jvmObject : lvms.values()) {
+
+            JavaProcess javaProcess = getJavaProcess(jvmObject);
+
+            if(javaProcess.getDisplayName().contains(processName)) {
+                return javaProcess;
+            }
+        }
+
+        return null;
     }
 
     /**
