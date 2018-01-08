@@ -17,11 +17,13 @@ import org.junit.Test;
 
 /**
  * Test case for {@link BeansCommand}
- * 
+ *
  * @author <a href="mailto:jiaqi.guo@gmail.com">Jiaqi Guo</a>
  */
 public class BeansCommandTest
 {
+    private static final String EOL = System.getProperty("line.separator");
+
     private BeansCommand command;
 
     private MBeanServerConnection conn;
@@ -44,12 +46,12 @@ public class BeansCommandTest
 
     /**
      * Test execution and get all beans
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testExecuteWithAllBeans()
-        throws Exception
+            throws Exception
     {
         context.checking( new Expectations()
         {
@@ -58,7 +60,7 @@ public class BeansCommandTest
                 will( returnValue( new String[] { "a", "b" } ) );
                 atLeast( 1 ).of( conn ).queryNames( new ObjectName( "a:*" ), null );
                 will( returnValue( new HashSet<ObjectName>( Arrays.asList( new ObjectName( "a:type=1" ),
-                                                                           new ObjectName( "a:type=2" ) ) ) ) );
+                        new ObjectName( "a:type=2" ) ) ) ) );
                 atLeast( 1 ).of( conn ).queryNames( new ObjectName( "b:*" ), null );
                 will( returnValue( new HashSet<ObjectName>( Arrays.asList( new ObjectName( "b:type=1" ) ) ) ) );
             }
@@ -66,17 +68,17 @@ public class BeansCommandTest
         command.setSession( new MockSession( output, conn ) );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "a:type=1\na:type=2\nb:type=1\n", output.toString() );
+        assertEquals( "a:type=1" + EOL + "a:type=2" + EOL + "b:type=1" + EOL, output.toString() );
     }
 
     /**
      * Test execution where domain is set in session
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testExecuteWithDomainInSession()
-        throws Exception
+            throws Exception
     {
         context.checking( new Expectations()
         {
@@ -92,17 +94,17 @@ public class BeansCommandTest
         command.setSession( session );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "b:type=1\n", output.toString() );
+        assertEquals( "b:type=1" + EOL, output.toString() );
     }
 
     /**
      * Test execution with an domain option
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testExecuteWithDomainOption()
-        throws Exception
+            throws Exception
     {
         command.setDomain( "b" );
         context.checking( new Expectations()
@@ -117,17 +119,17 @@ public class BeansCommandTest
         command.setSession( new MockSession( output, conn ) );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "b:type=1\n", output.toString() );
+        assertEquals( "b:type=1" + EOL, output.toString() );
     }
 
     /**
      * Test execution with domain NULL
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testExecuteWithNullDomain()
-        throws Exception
+            throws Exception
     {
         command.setDomain( "*" );
         context.checking( new Expectations()
@@ -137,7 +139,7 @@ public class BeansCommandTest
                 will( returnValue( new String[] { "a", "b" } ) );
                 atLeast( 1 ).of( conn ).queryNames( new ObjectName( "a:*" ), null );
                 will( returnValue( new HashSet<ObjectName>( Arrays.asList( new ObjectName( "a:type=1" ),
-                                                                           new ObjectName( "a:type=2" ) ) ) ) );
+                        new ObjectName( "a:type=2" ) ) ) ) );
                 atLeast( 1 ).of( conn ).queryNames( new ObjectName( "b:*" ), null );
                 will( returnValue( new HashSet<ObjectName>( Arrays.asList( new ObjectName( "b:type=1" ) ) ) ) );
             }
@@ -147,6 +149,6 @@ public class BeansCommandTest
         command.setSession( session );
         command.execute();
         context.assertIsSatisfied();
-        assertEquals( "a:type=1\na:type=2\nb:type=1\n", output.toString() );
+        assertEquals( "a:type=1" + EOL + "a:type=2" + EOL + "b:type=1" + EOL, output.toString() );
     }
 }
