@@ -1,17 +1,16 @@
 package org.cyclopsgroup.jmxterm;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.regex.Pattern;
-
-import javax.management.remote.JMXServiceURL;
-
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.cyclopsgroup.jmxterm.utils.ValueFormat;
+
+import javax.management.remote.JMXServiceURL;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for syntax checking
@@ -85,9 +84,20 @@ public final class SyntaxUtils
         {
             // TODO refactor and unit test
             if(jpm != null) {
-                JavaProcess javaProcess = jpm.get(url);
-                if(javaProcess != null) {
-                    return new JMXServiceURL(javaProcess.toUrl());
+                JavaProcess p = jpm.get(url);
+                if(p != null) {
+
+                    if ( !p.isManageable() )
+                    {
+                        p.startManagementAgent();
+                        if ( !p.isManageable() )
+                        {
+                            throw new IllegalStateException( "Managed agent for process name " + url + " couldn't start. Process name " +
+                                    url + " is not manageable" );
+                        }
+                    }
+
+                    return new JMXServiceURL(p.toUrl());
                 }
             }
 

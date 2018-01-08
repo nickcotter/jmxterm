@@ -1,13 +1,13 @@
 package org.cyclopsgroup.jmxterm.jdk6;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.Validate;
 import org.cyclopsgroup.jmxterm.JavaProcess;
 import org.cyclopsgroup.jmxterm.JavaProcessManager;
 import org.cyclopsgroup.jmxterm.utils.WeakCastUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * JDK6 specific java process manager
@@ -65,8 +65,6 @@ public class Jdk6JavaProcessManager
 
     @Override
     public JavaProcess get(String processName) {
-
-        System.out.println("trying to find process name: " + processName);
 
         Map<Integer, Object> lvms = staticVm.getAllVirtualMachines();
 
